@@ -2,7 +2,13 @@ package gui.util;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 
 public class Utils {
@@ -17,6 +23,47 @@ public class Utils {
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    public static <T> void formatTableColumnDate(TableColumn<T, LocalDate> tableColumn, String format) {
+        tableColumn.setCellFactory(column -> {
+            TableCell<T, LocalDate> cell = new TableCell<T, LocalDate>() {
+
+                // Troca SimpleDateFormat por DateTimeFormatter
+                private DateTimeFormatter dtf = DateTimeFormatter.ofPattern(format);
+
+                @Override
+                protected void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {  // boa prática: checar null também
+                        setText(null);
+                    } else {
+                        setText(item.format(dtf));  // LocalDate.format() com DateTimeFormatter
+                    }
+                }
+            };
+            return cell;
+        });
+    }
+
+    public static <T> void formatTableColumnDouble(TableColumn<T, Double> tableColumn, int decimalPlaces) {
+        tableColumn.setCellFactory(column -> {
+            TableCell<T, Double> cell = new TableCell<T, Double>() {
+
+                @Override
+                protected void updateItem(Double item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) { // boa prática: checar null também
+                        setText(null);
+                    } else {
+                        // Passa o Locale diretamente no String.format, sem alterar o global
+                        setText(String.format(Locale.US, "%." + decimalPlaces + "f", item));
+                    }
+                }
+            };
+            return cell;
+        });
     }
 
 }
