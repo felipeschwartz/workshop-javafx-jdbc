@@ -38,7 +38,6 @@ public class SellerDaoJDBC implements SellerDao {
 			
 			st.setString(1, obj.getName());
 			st.setString(2, obj.getEmail());
-			// ✅ Correto: converte LocalDate para java.sql.Date
 			st.setDate(3, java.sql.Date.valueOf(obj.getBirthDate()));
 			st.setDouble(4, obj.getBaseSalary());
 			st.setInt(5, obj.getDepartment().getId());
@@ -76,7 +75,6 @@ public class SellerDaoJDBC implements SellerDao {
 			
 			st.setString(1, obj.getName());
 			st.setString(2, obj.getEmail());
-			// ✅ Correto: converte LocalDate para java.sql.Date
 			st.setDate(3, java.sql.Date.valueOf(obj.getBirthDate()));
 			st.setDouble(4, obj.getBaseSalary());
 			st.setInt(5, obj.getDepartment().getId());
